@@ -57,7 +57,7 @@ const grabFirstItem = async (weapon) => {
 
 const battleMenu = async () => {
 
-  const enemy = new Character('Elf');
+  const enemy = new Character('Elf', 20, 3, 2, { name: 'rusted lance', durability: 1, attack: 3 });
   let isBattle = true;
   while (isBattle) {
     let response = await inquirer.prompt({
@@ -93,9 +93,12 @@ const battleMenu = async () => {
         console.log('what did you do you broke a thing');
         break;
     }
-    if (!enemy.isAlive) {
+    if (!enemy.isAlive()) {
       console.log('Enemy is dead');
       return;
+    }
+    if (!mainCharacter.isAlive()) {
+      console.log(`${mainCharacter.name} has passed.`);
     }
     const enemyAttack = enemy.attack(mainCharacter);
   }
