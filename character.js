@@ -14,6 +14,7 @@ function Character(name = 'noName', hp = 10, baseAttack = 1, baseDefense = 1, we
   };
 
   this.isAlive = () => {
+    console.log(this.hp > 0);
     return this.hp > 0;
   };
 
@@ -30,9 +31,6 @@ function Character(name = 'noName', hp = 10, baseAttack = 1, baseDefense = 1, we
   };
 
   this.receiveDamage = (offense) => {
-    console.log(`the type of hp is ${typeof this.hp}`);
-    console.log(`the type of defense is ${typeof this.defense}`);
-    console.log(`the type of offense is ${typeof offense}`);
     this.hp = parseInt(this.hp - (offense - this.defense), 10);
   };
 

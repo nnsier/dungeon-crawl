@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
@@ -41,23 +42,7 @@ async function main() {
 
   const firstWeapon = await grabFirstItem(weapon.weapon);
 
-  const response = await inquirer.prompt({
-    name: 'action',
-    type: 'rawlist',
-    message: 'Choose an action',
-    choices: [
-      'Attack',
-      'Spells',
-      'Check',
-      'Escape',
-    ],
-  });
-  const yourChoice = response.action;
-
-  const menu = await battleMenu(yourChoice);
-
-  const youChose = await console.log(`You chose ${yourChoice}`);
-
+  const menu = await battleMenu();
 }
 
 const grabFirstItem = async (weapon) => {
@@ -70,11 +55,25 @@ const grabFirstItem = async (weapon) => {
   }
 }
 
-const battleMenu = async (choice) => {
+const battleMenu = async () => {
+
   const enemy = new Character('Elf');
   let isBattle = true;
   while (isBattle) {
-    switch (choice) {
+    let response = await inquirer.prompt({
+      name: 'action',
+      type: 'rawlist',
+      message: 'Choose an action',
+      choices: [
+        'Attack',
+        'Spells',
+        'Check',
+        'Escape',
+      ],
+    });
+    let yourChoice = response.action;
+
+    switch (yourChoice) {
       case 'Attack':
         console.log('You chose Attack!');
         mainCharacter.attack(enemy);
@@ -94,8 +93,11 @@ const battleMenu = async (choice) => {
         console.log('what did you do you broke a thing');
         break;
     }
-    const enemyAttack = await enemy.attack(mainCharacter);
-    isBattle = await mainCharacter.isAlive();
+    if (!enemy.isAlive) {
+      console.log('Enemy is dead');
+      return;
+    }
+    const enemyAttack = enemy.attack(mainCharacter);
   }
 };
 
